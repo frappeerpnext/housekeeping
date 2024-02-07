@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:get_storage/get_storage.dart';
 import 'package:housekeeping/models/api/response_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -52,7 +53,7 @@ class Api {
     String baseUrl,
     String endPoint, {
     Map<String, String>? header,
-    Map<String, String>? cookie,
+    String? cookie,
     Object? body,
   }) async {
     Map<String, String> header_;
@@ -64,7 +65,7 @@ class Api {
         'Content-Type': 'application/json'
       };
       if (cookie != null) {
-        header_.addAll({'Cookie': cookie['cookie'].toString()});
+        header_.addAll({'Cookie': cookie});
       }
     }
 
@@ -106,6 +107,69 @@ class Api {
       POSTResponse resp = POSTResponse(600, null);
       return resp;
     }
+  }
+
+  //get with cookie header
+  static Future<GETResponse> getWithCookie(
+    String baseUrl,
+    String endPoint, {
+    Map<String, String>? header,
+  }) async {
+    String cookie = "";
+
+    Map<String, String> header_;
+    if (header != null) {
+      header_ = header;
+    } else {
+      final storage = GetStorage();
+      if (storage.hasData("headerCookie")) {
+        cookie = storage.read("headerCookie");
+      }
+      header_ = <String, String>{
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      };
+      if (cookie != "") {
+        header_.addAll({'Cookie': cookie});
+      }
+    }
+    var resp = await get(baseUrl, endPoint, header: header, cookie: cookie);
+    return resp;
+  }
+
+  // method post with cookie header
+  //post method
+  static Future<POSTResponse> postWithCookie(
+    String baseUrl,
+    String endPoint, {
+    Map<String, String>? header,
+    Object? body,
+  }) async {
+    String cookie = "";
+    Map<String, String> header_;
+    if (header != null) {
+      header_ = header;
+    } else {
+      final storage = GetStorage();
+      if (storage.hasData("headerCookie")) {
+        cookie = storage.read("headerCookie");
+      }
+      header_ = <String, String>{
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      };
+      if (cookie != "") {
+        header_.addAll({'Cookie': cookie});
+      }
+    }
+    var resp = await post(
+      baseUrl,
+      endPoint,
+      header: header,
+      body: body,
+      cookie: cookie,
+    );
+    return resp;
   }
 }
 
