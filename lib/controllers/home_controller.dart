@@ -28,6 +28,6 @@ class HomeController extends GetxController {
 
     dashboardData(jsonDecode(resp.content)["message"]);
 
-    print(dashboardData.value);
+    print(dashboardData);
   }
 }
