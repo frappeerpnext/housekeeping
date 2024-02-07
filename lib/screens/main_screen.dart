@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:housekeeping/controllers/main_controller.dart';
-import 'package:housekeeping/screens/home/home_screen.dart';
 import 'package:housekeeping/screens/widgets/main_drawer_widget.dart';
 
 class MainScreen extends StatelessWidget {
@@ -43,8 +42,7 @@ class MainScreen extends StatelessWidget {
                 ),
               ],
               currentIndex: controller.bottomNavigationBarIndexSelected.value,
-              onTap: (int index) =>
-                  controller.bottomNavigationBarIndexSelected(index),
+              onTap: controller.onBottomNavigationBarPressed,
             ),
           ),
         ));

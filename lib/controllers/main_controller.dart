@@ -8,8 +8,9 @@ import 'package:housekeeping/screens/search/search_screen.dart';
 
 class MainController extends GetxController {
   var loginCtr = Get.put(LoginController());
-  var bottomNavigationBarIndexSelected = 0.obs;
-  var title = "Home".obs;
+  var bottomNavigationBarIndexSelected = (0).obs;
+  var bottomBarTitle = ["Home", "Room", "Search", "Profile"];
+  var title = ("Home").obs;
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -17,26 +18,23 @@ class MainController extends GetxController {
   }
 
   get _onInitState async {
-    //
+    onBottomNavigationBarPressed(0);
   }
 
   void onBottomNavigationBarPressed(int index) {
+    title(bottomBarTitle[index]);
     bottomNavigationBarIndexSelected(index);
   }
 
   Widget? get getBodyWidget {
     switch (bottomNavigationBarIndexSelected.value) {
       case 0:
-        title("Home");
         return const HomeScreen();
       case 1:
-        title("Room");
         return const RoomScreen();
       case 2:
-        title("Search");
         return const SearchScreen();
       case 3:
-        title("Profile");
         return const ProfileScreen();
     }
     return null;
