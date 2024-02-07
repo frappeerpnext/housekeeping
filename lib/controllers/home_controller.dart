@@ -18,12 +18,9 @@ class HomeController extends GetxController {
 
   get _onInitState async {
     String serverUrl = storage.read("serverUrl");
-    String cookie = storage.read("headerCookie");
-
-    var resp = await Api.get(
+    var resp = await Api.getWithCookie(
       serverUrl,
       "/api/method/edoor.api.frontdesk.get_dashboard_data?property=ESTC+HOTEL&date=2024-01-31",
-      cookie: cookie,
     );
 
     dashboardData(jsonDecode(resp.content)["message"]);

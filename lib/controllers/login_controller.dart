@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:housekeeping/controllers/app_controller.dart';
+import 'package:housekeeping/controllers/home_controller.dart';
 import 'package:housekeeping/locator.dart';
 import 'package:housekeeping/services/api_service.dart';
 import 'package:housekeeping/services/app_service.dart';
