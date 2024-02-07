@@ -28,13 +28,13 @@ class MainScreen extends StatelessWidget {
                 ),
                 BottomNavigationBarItem(
                   backgroundColor: Colors.blue,
-                  icon: Icon(Icons.room_service),
+                  icon: Icon(Icons.bedroom_child),
                   label: 'Rooms',
                 ),
                 BottomNavigationBarItem(
                   backgroundColor: Colors.blue,
-                  icon: Icon(Icons.search),
-                  label: 'Search',
+                  icon: Icon(Icons.task),
+                  label: 'My Task',
                 ),
                 BottomNavigationBarItem(
                   backgroundColor: Colors.blue,
