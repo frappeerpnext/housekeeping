@@ -13,6 +13,14 @@ class LoginController extends GetxController {
   var appCtr = Get.put(AppController());
   var appService = locator<IAppService>();
 
+  var isLoading = false.obs;
+
+  void onWaiting() async {
+    isLoading.value = true;
+    await Future.delayed(const Duration(seconds: 3));
+    isLoading.value = false;
+  }
+
   //storage init
   final storage = GetStorage();
 
@@ -23,6 +31,8 @@ class LoginController extends GetxController {
   var serverUrlInput = "".obs;
   var usernameInput = "".obs;
   var passwordInput = "".obs;
+
+  get loading => null;
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -36,13 +46,10 @@ class LoginController extends GetxController {
     usernameController.value.text = usernameInput.value;
     passwordController.value.text = passwordInput.value;
 
-    //
     if (storage.hasData("serverUrl")) {
       serverUrlInput(storage.read("serverUrl"));
       serverUrlController.value.text = serverUrlInput.value;
     }
-
-    //
   }
 
   //username changed value
@@ -56,14 +63,43 @@ class LoginController extends GetxController {
   void onLoginPressed() async {
     if (serverUrlInput.value.isEmpty) {
       //invalid server url
+      Get.snackbar(
+        'Housekeeping App',
+        "Invalid server url!",
+        colorText: Colors.white,
+        backgroundColor: Colors.orange[300],
+        icon: const Icon(
+          Icons.add_alert,
+          color: Colors.white,
+        ),
+      );
       return;
     }
     if (usernameInput.value.isEmpty) {
       //invalid username
+      Get.snackbar(
+        'Housekeeping App',
+        "Invalid username!",
+        colorText: Colors.white,
+        backgroundColor: Colors.orange[300],
+        icon: const Icon(
+          Icons.add_alert,
+          color: Colors.white,
+        ),
+      );
       return;
     }
     if (passwordInput.value.isEmpty) {
-      //invalid password
+      Get.snackbar(
+        'Housekeeping App',
+        "Invalid password!",
+        colorText: Colors.white,
+        backgroundColor: Colors.orange[300],
+        icon: const Icon(
+          Icons.add_alert,
+          color: Colors.white,
+        ),
+      );
       return;
     }
     if (!storage.hasData("serverUrl")) {
@@ -85,8 +121,7 @@ class LoginController extends GetxController {
               (index == -1) ? rawCookie : rawCookie.substring(0, index);
           storage.write("rawCookie", rawCookie);
           storage.write("headerCookie", cookie);
-          //
-
+  
           var auth = await appService.appAuthorization();
           if (auth) {
             appCtr.onGetUserLogonCookie();
@@ -94,7 +129,18 @@ class LoginController extends GetxController {
           appCtr.isAuthorized(auth);
         }
       }
-    } else {}
+    } else {
+      Get.snackbar(
+        'Housekeeping App',
+        "Please input correct username and password!",
+        colorText: Colors.white,
+        backgroundColor: Colors.orange[300],
+        icon: const Icon(
+          Icons.add_alert,
+          color: Colors.white,
+        ),
+      );
+    }
   }
 
   void onLogoutPressed() async {
@@ -104,8 +150,6 @@ class LoginController extends GetxController {
       storage.remove("headerCookie");
       var auth = await appService.appAuthorization();
       appCtr.isAuthorized(auth);
-    } else {
-      //login fails tost
     }
   }
 }

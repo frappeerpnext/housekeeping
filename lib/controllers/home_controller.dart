@@ -25,6 +25,11 @@ class HomeController extends GetxController {
 
     dashboardData(jsonDecode(resp.content)["message"]);
 
+    // ignore: avoid_print
     print(dashboardData);
+  }
+
+  Future<void> onRefresh() async {
+    await _onInitState;
   }
 }

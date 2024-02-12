@@ -22,7 +22,8 @@ class MainDrawerWidget extends StatelessWidget {
               color: Colors.blue[800]!,
             ),
             accountName: TextWidget(
-              text: "${controller.loginCtr.appCtr.userLogon["full_name"]}",
+              // text: "${controller.loginCtr.appCtr.userLogon["full_name"]}",
+              text: controller.loginCtr.usernameInput.value,
             ),
             accountEmail: const Text(" "),
             currentAccountPicture: ClipRRect(
