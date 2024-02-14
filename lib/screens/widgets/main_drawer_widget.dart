@@ -11,7 +11,7 @@ class MainDrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<MainController>();
-    print(controller.loginCtr.appCtr.userLogon["user_id"]);
+    // print(controller.loginCtr.appCtr.userLogon["user_id"]);
     return Drawer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

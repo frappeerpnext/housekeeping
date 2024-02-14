@@ -26,7 +26,7 @@ class LandingScreen extends StatelessWidget {
                     "Housekeeping",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
-                      color: lightColor,
+                      color: Colors.yellow,
                       fontSize: 28,
                     ),
                   ),

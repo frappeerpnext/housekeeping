@@ -1,35 +1,121 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:housekeeping/services/api_service.dart';
 
-class HomeController extends GetxController {
+class HomeController extends GetxController
+    with GetSingleTickerProviderStateMixin {
+  var dataLoadding = true.obs;
   final storage = GetStorage();
   var serverUrl = "".obs;
   var cookie = "".obs;
-  var dashboardData = <dynamic, dynamic>{}.obs;
+  var tabBarIndex = 1.obs; // 0 Last Week, 1 Today, 2 Tomorrow
+
+  var todayDashboardData = <dynamic, dynamic>{}.obs;
+  var isLoadTodayData = true.obs;
+
+  var tomorrowDashboardData = <dynamic, dynamic>{}.obs;
+  var isLoadTomorrowData = true.obs;
+
+  var yesterdayDashboardData = <dynamic, dynamic>{}.obs;
+  var isYesterdayData = true.obs;
+
+  late TabController tabController;
 
   @override
   Future<void> onInit() async {
     super.onInit();
+    tabController = TabController(vsync: this, length: 3);
+    tabController.addListener(() => {
+          if (!tabController.indexIsChanging)
+            {
+              onTabBarPressed(tabController.index),
+            }
+        });
+    tabController.index = tabBarIndex.value;
     await _onInitState;
   }
 
   get _onInitState async {
+    dataLoadding(true);
+    await onLoadDashboardData();
+    dataLoadding(false);
+  }
+
+  Future<void> onLoadDashboardData() async {
     String serverUrl = storage.read("serverUrl");
-    var resp = await Api.getWithCookie(
-      serverUrl,
-      "/api/method/edoor.api.frontdesk.get_dashboard_data?property=ESTC+HOTEL&date=2024-01-31",
-    );
+    String apiQuery =
+        "/api/method/edoor.api.frontdesk.get_dashboard_data_by_timespan?property=ESTC+HOTEL&timespan=";
+    var date = "today";
+    if (tabBarIndex.value == 0) {
+      date = "yesterday";
+    } else if (tabBarIndex.value == 2) {
+      date = "tomorrow";
+    }
 
-    dashboardData(jsonDecode(resp.content)["message"]);
+    apiQuery = "$apiQuery$date";
+    if (yesterdayDashboardData.isEmpty && tabBarIndex.value == 0) {
+      isYesterdayData(true);
+      var resp = await Api.getWithCookie(
+        serverUrl,
+        apiQuery,
+      );
+      var result_ = jsonDecode(resp.content)["message"];
+      yesterdayDashboardData(result_);
+      isYesterdayData(false);
+    } else if (todayDashboardData.isEmpty && tabBarIndex.value == 1) {
+      isLoadTodayData(true);
+      var resp = await Api.getWithCookie(
+        serverUrl,
+        apiQuery,
+      );
+      var result_ = jsonDecode(resp.content)["message"];
+      todayDashboardData(result_);
+      isLoadTodayData(false);
+    } else if (tomorrowDashboardData.isEmpty && tabBarIndex.value == 2) {
+      isLoadTomorrowData(true);
+      var resp = await Api.getWithCookie(
+        serverUrl,
+        apiQuery,
+      );
+      var result_ = jsonDecode(resp.content)["message"];
+      tomorrowDashboardData(result_);
+      isLoadTomorrowData(false);
+    }
 
-    // ignore: avoid_print
-    print(dashboardData);
+    // switch (tabBarIndex.value) {
+    //   case 0:
+    //     dashboardData(yesterdayDashboardData);
+    //     break;
+    //   case 1:
+    //     dashboardData(todayDashboardData);
+    //     break;
+    //   default:
+    //     dashboardData(tomorrowDashboardData);
+    //     break;
+    // }
+    // dashboardData.refresh();
   }
 
   Future<void> onRefresh() async {
-    await _onInitState;
+    switch (tabBarIndex.value) {
+      case 0:
+        yesterdayDashboardData({});
+        break;
+      case 2:
+        tomorrowDashboardData({});
+        break;
+      default:
+        todayDashboardData({});
+        break;
+    }
+    await onLoadDashboardData();
   }
-  
+
+  void onTabBarPressed(int index) async {
+    tabBarIndex(index);
+    tabController.index = tabBarIndex.value;
+    await onLoadDashboardData();
+  }
 }
