@@ -43,10 +43,10 @@ class HomeRoomStatusWidget extends StatelessWidget {
                                   e['icon'],
                                   width: 30,
                                 ),
-                                SizedBox(width: 25),
+                                const SizedBox(width: 25),
                                 Text(
                                   e['status'] ?? "",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -63,7 +63,7 @@ class HomeRoomStatusWidget extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   (e['total'] ?? 0).toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),

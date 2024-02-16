@@ -8,8 +8,6 @@ class HomeOccupancyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 400,
-      height: 260,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),

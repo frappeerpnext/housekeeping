@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:housekeeping/screens/home/widgets/home_reservation_list_widget.dart';
+import 'package:get/get.dart';
+import 'package:housekeeping/screens/reservation_list/reservation_list_screen.dart';
 
 class HomeSumaryWidget extends StatelessWidget {
   final Map<dynamic, dynamic> dashboardData;
@@ -9,7 +10,6 @@ class HomeSumaryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 400,
       height: 250,
       decoration: BoxDecoration(
           color: Colors.white,
@@ -39,13 +39,7 @@ class HomeSumaryWidget extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        // Navigate to another page
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const HomeReservationListWidget()),
-                        );
+                        Get.to(() => ReservationListScreen());
                       },
                       child: Container(
                         width: 180,
@@ -81,33 +75,38 @@ class HomeSumaryWidget extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 15),
-                    Container(
-                      width: 180,
-                      height: 70,
-                      decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.grey.shade200)),
-                      child: Column(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(top: 3.0),
-                            child: Text(
-                              'Stay Over',
-                              style: TextStyle(
-                                  color: Color.fromRGBO(255, 255, 255, 1),
-                                  fontSize: 15,
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => ReservationListScreen());
+                      },
+                      child: Container(
+                        width: 180,
+                        height: 70,
+                        decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey.shade200)),
+                        child: Column(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(top: 3.0),
+                              child: Text(
+                                'Stay Over',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Text(
+                              '${dashboardData['stay_over'].toInt()}',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
                                   fontWeight: FontWeight.bold),
                             ),
-                          ),
-                          Text(
-                            '${dashboardData['stay_over'].toInt()}',
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -115,33 +114,38 @@ class HomeSumaryWidget extends StatelessWidget {
                 const SizedBox(height: 15),
                 Row(
                   children: [
-                    Container(
-                      width: 180,
-                      height: 70,
-                      decoration: BoxDecoration(
-                          color: Colors.red[300],
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.grey.shade200)),
-                      child: Column(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(top: 3.0),
-                            child: Text(
-                              'Departure',
-                              style: TextStyle(
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => ReservationListScreen());
+                      },
+                      child: Container(
+                        width: 180,
+                        height: 70,
+                        decoration: BoxDecoration(
+                            color: Colors.red[300],
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey.shade200)),
+                        child: Column(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(top: 3.0),
+                              child: Text(
+                                'Departure',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Text(
+                              '${dashboardData['departure'].toInt()}',
+                              style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 15,
+                                  fontSize: 25,
                                   fontWeight: FontWeight.bold),
                             ),
-                          ),
-                          Text(
-                            '${dashboardData['departure'].toInt()}',
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(width: 15),

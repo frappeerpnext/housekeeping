@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:housekeeping/controllers/app_controller.dart';
 import 'package:housekeeping/services/api_service.dart';
 
 class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin {
+  var appCtr = Get.find<AppController>();
+
   var dataLoadding = true.obs;
   final storage = GetStorage();
   var serverUrl = "".obs;
@@ -46,7 +49,7 @@ class HomeController extends GetxController
   Future<void> onLoadDashboardData() async {
     String serverUrl = storage.read("serverUrl");
     String apiQuery =
-        "/api/method/edoor.api.frontdesk.get_dashboard_data_by_timespan?property=ESTC+HOTEL&timespan=";
+        "/api/method/edoor.api.frontdesk.get_dashboard_data_by_timespan?property=${appCtr.propertyName}&timespan=";
     var date = "today";
     if (tabBarIndex.value == 0) {
       date = "yesterday";
@@ -55,13 +58,15 @@ class HomeController extends GetxController
     }
 
     apiQuery = "$apiQuery$date";
+    var result_;
     if (yesterdayDashboardData.isEmpty && tabBarIndex.value == 0) {
       isYesterdayData(true);
       var resp = await Api.getWithCookie(
         serverUrl,
         apiQuery,
       );
-      var result_ = jsonDecode(resp.content)["message"];
+      result_ = jsonDecode(resp.content)["message"];
+
       yesterdayDashboardData(result_);
       isYesterdayData(false);
     } else if (todayDashboardData.isEmpty && tabBarIndex.value == 1) {
@@ -70,7 +75,7 @@ class HomeController extends GetxController
         serverUrl,
         apiQuery,
       );
-      var result_ = jsonDecode(resp.content)["message"];
+      result_ = jsonDecode(resp.content)["message"];
       todayDashboardData(result_);
       isLoadTodayData(false);
     } else if (tomorrowDashboardData.isEmpty && tabBarIndex.value == 2) {
@@ -79,10 +84,12 @@ class HomeController extends GetxController
         serverUrl,
         apiQuery,
       );
-      var result_ = jsonDecode(resp.content)["message"];
+      result_ = jsonDecode(resp.content)["message"];
       tomorrowDashboardData(result_);
       isLoadTomorrowData(false);
     }
+    appCtr.currentWorkingDay = DateTime.parse(result_["working_date"]);
+
 
     // switch (tabBarIndex.value) {
     //   case 0:

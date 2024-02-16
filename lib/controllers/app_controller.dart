@@ -14,6 +14,9 @@ class AppController extends GetxController {
   var isAuthorized = false.obs;
   var isLoading = true.obs;
 
+  DateTime currentWorkingDay = DateTime.now();
+  var propertyName = "ESTC Hotel";
+
   @override
   Future<void> onInit() async {
     super.onInit();

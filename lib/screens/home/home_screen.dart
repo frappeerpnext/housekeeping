@@ -9,7 +9,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(HomeController());
-    // var today = controller.dashboardData["working_date"];
+
     return Obx(() => DefaultTabController(
           initialIndex: controller.tabBarIndex.value,
           length: 3, // Number of tabs
