@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class GroupReservationCardTitle extends StatelessWidget {
   final String title;
@@ -12,28 +11,37 @@ class GroupReservationCardTitle extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 50,
+          height: 40,
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
+            color: Colors.blue[700],
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10),
+            padding: const EdgeInsets.only(left: 20.0, right: 10),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     title,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                    style: const TextStyle(fontSize: 17, color: Colors.white),
                   ),
                   Container(
-                    width: 40,
-                    height: 40,
+                    width: 32,
+                    height: 32,
                     decoration: BoxDecoration(
-                      color: Colors.pink,
-                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Center(child: Text(total.toString())),
+                    child: Center(
+                      child: Text(
+                        total.toString(),
+                        style: const TextStyle(
+                            color: Colors.orange,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   )
                 ]),
           ),

@@ -4,47 +4,50 @@ import 'package:housekeeping/controllers/reservation_list_controller.dart';
 import 'package:housekeeping/screens/reservation_list/widgets/calendar_navigation_widget.dart';
 import 'package:housekeeping/screens/reservation_list/widgets/group_reservation_card_widget.dart';
 
-// ignore: must_be_immutable
 class ReservationListScreen extends StatelessWidget {
-  var controller = Get.put(ReservationListController());
+  final ReservationListController controller =
+      Get.put(ReservationListController());
 
-  ReservationListScreen({super.key});
+  ReservationListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Scaffold(
+    return Obx(() => Scaffold(
           backgroundColor: Colors.grey[200],
           appBar: AppBar(
             title: const Text('Reservation List'),
             centerTitle: true,
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                const CalendarNavigationWidget(),
-                Column(
-                  children: [
-                    GroupReservationCardWidget(
-                      data: controller.result["arrival"],
-                      title: 'Arrival',
+          body: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const CalendarNavigationWidget(),
+              const SizedBox(height: 5),
+              controller.isLoading.value
+                  ? const CircularProgressIndicator()
+                  : Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            GroupReservationCardWidget(
+                              data: controller.result["arrival"] ?? [],
+                              title: 'Arrival',
+                            ),
+                            GroupReservationCardWidget(
+                              data: controller.result["stay_over"] ?? [],
+                              title: 'Stay Over',
+                            ),
+                            GroupReservationCardWidget(
+                              data: controller.result["departure"] ?? [],
+                              title: 'Departure',
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    GroupReservationCardWidget(
-                      data: controller.result["stay_over"],
-                      title: 'Stay Over',
-                    ),
-                    GroupReservationCardWidget(
-                      data: controller.result["departure"],
-                      title: 'Depature',
-                    ),
-                    controller.isLoading.value
-                        ? Container()
-                        : Text("${controller.result}"),
-                  ],
-                )
-              ],
-            ),
-          )),
-    );
+            ],
+          ),
+        ));
   }
 }

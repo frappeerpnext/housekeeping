@@ -57,6 +57,7 @@ class HomeWidget extends StatelessWidget {
                     HomeSumaryWidget(dashboardData: dashboardData),
                     const SizedBox(height: 10),
                     HomeRoomStatusWidget(dashboardData: dashboardData),
+                    Text("${dashboardData}")
                   ],
                 ),
               ),

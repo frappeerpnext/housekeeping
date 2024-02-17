@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_week/flutter_calendar_week.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:housekeeping/controllers/app_controller.dart';
@@ -14,12 +15,17 @@ class ReservationListController extends GetxController {
   var isLoading = true.obs;
   var calendarCtr = CalendarWeekController().obs;
   var result = <dynamic, dynamic>{}.obs;
+  // ignore: prefer_typing_uninitialized_variables
   var currentSelectedDate;
+
+  CarouselController carouselOptionController = CarouselController();
+  var carouselOptionIndex = 1.obs;
+
   @override
   Future<void> onInit() async {
     super.onInit();
     await Future.delayed(const Duration(milliseconds: 5));
-    calendarCtr.value.jumpToDate(DateTime(2024, 2, 1));
+    calendarCtr.value.jumpToDate(appCtr.currentWorkingDay);
 
     isLoading(true);
     currentSelectedDate = appCtr.currentWorkingDay;
@@ -28,8 +34,8 @@ class ReservationListController extends GetxController {
   }
 
   Future<void> onLoadReservationList(date) async {
-    String serverUrl = storage.read("serverUrl");
-    String formattedDate = DateFormat("yyyy-MM-dd").format(date);
+    String serverUrl = storage.read("serverUrl");    String formattedDate = DateFormat("yyyy-MM-dd").format(date);
+
     String apiQuery =
         "/api/method/edoor.api.app.reservation_list?property=${appCtr.propertyName}&date=$formattedDate";
 
@@ -37,11 +43,15 @@ class ReservationListController extends GetxController {
     if (resp.isSuccess) {
       result(jsonDecode(resp.content)["message"]);
     }
+    currentSelectedDate = date;
   }
 
+  Future<void> onChangeDate(n) async {
+    isLoading(true);
+    calendarCtr.value.jumpToDate(currentSelectedDate.add(Duration(days: n)));
 
-  // Future<void> onChangeDate() async {
-  //   calendarCtr.value.jumpToDate(currentSelectedDate.add(Duration(days: 1)));
-  //   await onLoadReservationList(currentSelectedDate);
-  // }
+    await onLoadReservationList(currentSelectedDate.add(Duration(days: n)));
+
+    isLoading(false);
+  }
 }
