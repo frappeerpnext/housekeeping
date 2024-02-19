@@ -30,7 +30,7 @@ class GroupReservationCardWidget extends StatelessWidget {
         ]),
         const SizedBox(height: 10),
         data.isEmpty
-            ? GroupReservationNoValue(
+            ? GroupReservationNoValueWidget(
                 text: "Thers is no $title on $formattedDate")
             : Column(
                 children: (data)

@@ -58,6 +58,7 @@ class HomeController extends GetxController
     }
 
     apiQuery = "$apiQuery$date";
+    // ignore: prefer_typing_uninitialized_variables
     var result_;
     if (yesterdayDashboardData.isEmpty && tabBarIndex.value == 0) {
       isYesterdayData(true);

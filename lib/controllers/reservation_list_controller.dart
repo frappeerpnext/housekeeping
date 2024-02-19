@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:flutter_calendar_week/flutter_calendar_week.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
@@ -8,7 +7,7 @@ import 'package:housekeeping/controllers/app_controller.dart';
 import 'package:housekeeping/services/api_service.dart';
 import 'package:intl/intl.dart';
 
-class ReservationListController extends GetxController {
+class ReservationListController extends GetxController { 
   var appCtr = Get.find<AppController>();
 
   final storage = GetStorage();
@@ -34,7 +33,8 @@ class ReservationListController extends GetxController {
   }
 
   Future<void> onLoadReservationList(date) async {
-    String serverUrl = storage.read("serverUrl");    String formattedDate = DateFormat("yyyy-MM-dd").format(date);
+    String serverUrl = storage.read("serverUrl");
+    String formattedDate = DateFormat("yyyy-MM-dd").format(date);
 
     String apiQuery =
         "/api/method/edoor.api.app.reservation_list?property=${appCtr.propertyName}&date=$formattedDate";
