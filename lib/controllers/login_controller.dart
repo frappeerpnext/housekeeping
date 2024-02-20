@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:housekeeping/controllers/app_controller.dart';
-import 'package:housekeeping/controllers/home_controller.dart';
 import 'package:housekeeping/locator.dart';
 import 'package:housekeeping/services/api_service.dart';
 import 'package:housekeeping/services/app_service.dart';
@@ -14,12 +13,6 @@ class LoginController extends GetxController {
   var appService = locator<IAppService>();
 
   var isLoading = false.obs;
-
-  void onWaiting() async {
-    isLoading.value = true;
-    await Future.delayed(const Duration(seconds: 3));
-    isLoading.value = false;
-  }
 
   //storage init
   final storage = GetStorage();
@@ -61,6 +54,10 @@ class LoginController extends GetxController {
 
   //method login system
   void onLoginPressed() async {
+    if (isLoading.value) {
+      return;
+    }
+
     if (serverUrlInput.value.isEmpty) {
       //invalid server url
       Get.snackbar(
@@ -110,6 +107,7 @@ class LoginController extends GetxController {
       "usr": usernameInput.value,
       "pwd": passwordInput.value,
     });
+    isLoading.value = true;
     var resp =
         await Api.post(serverUrlInput.value, "/api/method/login", body: body_);
     if (resp.isSuccess) {
@@ -121,15 +119,18 @@ class LoginController extends GetxController {
               (index == -1) ? rawCookie : rawCookie.substring(0, index);
           storage.write("rawCookie", rawCookie);
           storage.write("headerCookie", cookie);
-  
+
           var auth = await appService.appAuthorization();
           if (auth) {
             appCtr.onGetUserLogonCookie();
           }
           appCtr.isAuthorized(auth);
+
+          isLoading.value = false;
         }
       }
     } else {
+      isLoading.value = false;
       Get.snackbar(
         'Housekeeping App',
         "Please input correct username and password!",

@@ -166,7 +166,6 @@ class LoginScreen extends StatelessWidget {
                             () => FloatingActionButton(
                               backgroundColor: Colors.black,
                               onPressed: () {
-                                controller.loginCtr.onWaiting();
                                 controller.loginCtr.onLoginPressed();
                               },
                               shape: RoundedRectangleBorder(
