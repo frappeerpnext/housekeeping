@@ -42,6 +42,7 @@ class ReservationListScreen extends StatelessWidget {
                               data: controller.result["departure"] ?? [],
                               title: 'Departure',
                             ),
+                            SizedBox(height: 70),
                           ],
                         ),
                       ),
